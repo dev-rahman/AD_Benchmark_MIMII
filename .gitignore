@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.env/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# macOS
+.DS_Store
+
+# Audio data — never commit to Git (too large)
+data/MIMII/**/*.wav
+data/MIMII/**/*.flac
+
+# Model checkpoints
+*.pt
+*.pth
+*.h5
+*.pkl
+*.joblib
+
+# CNN14 embedding cache
+Embedding/CNN14_KNN/.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
