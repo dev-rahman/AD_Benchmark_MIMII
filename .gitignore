@@ -23,6 +23,7 @@ env/
 .DS_Store
 
 # Audio data — never commit to Git (too large)
+data/
 data/MIMII/**/*.wav
 data/MIMII/**/*.flac
 

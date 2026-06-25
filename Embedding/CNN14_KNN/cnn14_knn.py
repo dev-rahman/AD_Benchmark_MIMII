@@ -36,9 +36,9 @@ os.makedirs(CACHE_DIR, exist_ok=True)
 # ── Embedding extraction ──────────────────────────────────────────────────────
 
 def load_cnn14_model(device: str):
-    """Load pretrained CNN14 from panns-inference. Downloads on first call."""
+    """Load pretrained CNN14 from panns-inference. Always uses CPU (MPS not supported)."""
     from panns_inference import AudioTagging
-    at = AudioTagging(checkpoint_path=None, device=device)
+    at = AudioTagging(checkpoint_path=None, device="cpu")
     at.model.eval()
     return at.model
 
@@ -62,7 +62,8 @@ def extract_embeddings(folder: str, model, device: str,
     embeddings = []
     for p in tqdm(paths, desc=os.path.basename(folder), leave=False):
         y = load_audio(p, sr=SAMPLE_RATE)
-        waveform = torch.tensor(y, dtype=torch.float32).unsqueeze(0).to(device)
+        waveform = torch.tensor(y, dtype=torch.float32).unsqueeze(0).to("cpu")
+
         with torch.no_grad():
             out = model(waveform)
         emb = out["embedding"].squeeze().cpu().numpy()
@@ -84,8 +85,7 @@ def run(machine: str, k: int = K_NEIGHBOURS) -> dict:
     except ImportError:
         raise ImportError("Run: pip install panns-inference")
 
-    print(f"
-{'='*55}")
+    print(f"{'='*55}")
     print(f"  CNN14 + kNN | machine = {machine} | k = {k} | device = {device}")
     print(f"{'='*55}")
 

@@ -1,0 +1,2 @@
+machine,method,AUC,pAUC,Accuracy,Precision,Recall,F1,Threshold,TN,FP,FN,TP
+pump,DenseAE,0.7798,0.3974,0.6659,0.638,0.8618,0.7332,0.126792,177,223,63,393

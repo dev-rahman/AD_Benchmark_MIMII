@@ -93,8 +93,7 @@ def reconstruction_error(model: nn.Module, X: np.ndarray, device: str) -> np.nda
 
 def run(machine: str) -> dict:
     device = get_device()
-    print(f"
-{'='*55}")
+    print(f"{'='*55}")
     print(f"  Dense AE | machine = {machine} | device = {device}")
     print(f"{'='*55}")
 
