@@ -84,7 +84,7 @@ AD_Benchmark_MIMII_v2/
 ### 1. Clone
 
 ```bash
-git clone https://github.com/<YOUR_USERNAME>/AD_Benchmark_MIMII_v2.git
+git clone https://github.com/<dev-rahman>/AD_Benchmark_MIMII_v2.git
 cd AD_Benchmark_MIMII_v2
 ```
 

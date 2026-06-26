@@ -1,0 +1,2 @@
+machine,method,AUC,pAUC,Accuracy,Precision,Recall,F1,Threshold,TN,FP,FN,TP
+valve,CNN_AE,0.5109,0.0457,0.5472,0.5464,0.9958,0.7056,0.001039,4,396,2,477

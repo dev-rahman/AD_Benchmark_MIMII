@@ -107,8 +107,7 @@ def reconstruction_error(model: nn.Module, X_tensor: torch.Tensor,
 
 def run(machine: str) -> dict:
     device = get_device()
-    print(f"
-{'='*55}")
+    print(f"{'='*55}")
     print(f"  CNN AE | machine = {machine} | device = {device}")
     print(f"{'='*55}")
 

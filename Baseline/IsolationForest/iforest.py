@@ -32,8 +32,7 @@ RANDOM_STATE  = 42
 
 
 def run(machine: str) -> dict:
-    print(f"
-{'='*55}")
+    print(f"{'='*55}")
     print(f"  Isolation Forest | machine = {machine}")
     print(f"{'='*55}")
 

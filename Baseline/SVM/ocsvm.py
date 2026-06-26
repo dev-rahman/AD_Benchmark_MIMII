@@ -31,8 +31,7 @@ KERNEL = "rbf"
 
 
 def run(machine: str) -> dict:
-    print(f"
-{'='*55}")
+    print(f"{'='*55}")
     print(f"  OCSVM | machine = {machine}")
     print(f"{'='*55}")
 

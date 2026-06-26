@@ -1,0 +1,2 @@
+machine,method,AUC,pAUC,Accuracy,Precision,Recall,F1,Threshold,TN,FP,FN,TP
+fan,TransformerAE,0.5619,0.077,0.7915,0.793,0.9946,0.8824,0.001345,17,383,8,1467
