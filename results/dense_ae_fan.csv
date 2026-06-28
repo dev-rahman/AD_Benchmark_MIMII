@@ -1,2 +1,2 @@
 machine,method,AUC,pAUC,Accuracy,Precision,Recall,F1,Threshold,TN,FP,FN,TP
-fan,DenseAE,0.7159,0.2069,0.7915,0.7923,0.9959,0.8825,0.064272,15,385,6,1469
+fan,DenseAE,0.7156,0.21,0.7968,0.7999,0.9892,0.8845,0.073916,35,365,16,1459
