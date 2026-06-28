@@ -26,7 +26,7 @@ from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import StandardScaler
 import librosa
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from utils.config   import DATA_ROOT, RESULTS_DIR, MACHINES, SAMPLE_RATE, get_device
 from utils.features import wav_paths
 from utils.evaluate import evaluate, save_results

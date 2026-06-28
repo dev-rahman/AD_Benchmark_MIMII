@@ -1,2 +1,2 @@
 machine,method,AUC,pAUC,Accuracy,Precision,Recall,F1,Threshold,TN,FP,FN,TP
-valve,DenseAE,0.7325,0.0648,0.7088,0.6713,0.9123,0.7735,0.104477,186,214,42,437
+valve,DenseAE,0.7288,0.072,0.6997,0.6656,0.9019,0.766,0.1064,183,217,47,432
