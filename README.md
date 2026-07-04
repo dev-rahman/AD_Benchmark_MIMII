@@ -1,4 +1,4 @@
-# AD_Benchmark_MIMII_v2
+# AD_Benchmark_MIMII
 
 Classical and Deep Learning Approaches for Industrial Sound Anomaly Detection on the MIMII Dataset
 
