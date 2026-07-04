@@ -1,94 +1,125 @@
 # AD_Benchmark_MIMII_v2
 
-**Classical and Deep Learning Approaches for Industrial Sound Anomaly Detection on the MIMII Dataset**
+Classical and Deep Learning Approaches for Industrial Sound Anomaly Detection on the MIMII Dataset
 
 ---
 
-## Authors
+## 1. Project Overview
+
+This repository contains the implementation and benchmark results for our comparative study of anomaly detection methods on industrial machine sounds from the MIMII dataset.[web:21]  
+We evaluate:
+
+- Classical machine learning baselines using handcrafted acoustic features.
+- Reconstruction-based deep learning models (autoencoders).
+- Embedding-based deep learning models using pretrained CNN14 features with k-nearest neighbors (kNN).
+
+All methods are trained and evaluated under a common experimental protocol on three machine types: **fan**, **pump**, and **valve**.
+
+---
+
+## 2. Authors and Affiliation
 
 | Name                | Role                  | ORCID                 |
 | ------------------- | --------------------- | --------------------- |
 | **Simin Mirzadeh**  | Co-author & Developer | `0009-0005-5132-9599` |
 | **Muhammad Rahman** | Co-author & Developer | `0009-0006-3456-6004` |
 
-University of Bamberg, Bamberg, Germany
+University of Bamberg, Bamberg, Germany  
 Supervised by **Prof. Dr. Jakob Abeßer**
 
----
+This repository accompanies the paper:
 
-## Research Question
-
-> _Do deep learning methods (autoencoders, pretrained embeddings) significantly outperform
-> classical ML baselines (OCSVM, Isolation Forest) for unsupervised acoustic anomaly detection?_
+> Mirzadeh, S., Rahman, M.  
+> _Classical and Deep Learning Approaches for Industrial Sound Anomaly Detection on the MIMII Dataset_ (2026).
 
 ---
 
-## Methods
+## 3. Research Question
 
-Six models are benchmarked across three machine types (fan, pump, valve) from the MIMII dataset.
+> Do deep learning methods (autoencoders, pretrained embeddings) significantly outperform classical ML baselines (OCSVM, Isolation Forest) for unsupervised acoustic anomaly detection on industrial machine sounds from the MIMII dataset?
 
-| #   | Model                       | Category            | Input Features              | Anomaly Score            |
-| --- | --------------------------- | ------------------- | --------------------------- | ------------------------ |
-| 1   | **OCSVM**                   | Classical ML        | 87-dim MFCC + spectral      | Neg. decision function   |
-| 2   | **Isolation Forest**        | Classical ML        | 87-dim MFCC + spectral      | Neg. score_samples       |
-| 3   | **Dense Autoencoder**       | DL – Reconstruction | 87-dim feature vector       | MSE reconstruction error |
-| 4   | **CNN Autoencoder**         | DL – Reconstruction | Log-mel spectrogram 128×128 | MSE pixel reconstruction |
-| 5   | **Transformer Autoencoder** | DL – Reconstruction | Log-mel sequence (T×N_MELS) | MSE token reconstruction |
-| 6   | **CNN14 + kNN**             | Hybrid (DL Emb.)    | CNN14 2048-dim embedding    | Mean kNN distance        |
+We further analyze:
+
+- How model complexity relates to anomaly detection performance.
+- Whether intermediate (truncated) CNN14 embeddings improve kNN‑based detection compared to full CNN14 features.[web:23][web:52]
 
 ---
 
-## Repository Structure
+## 4. Methods
 
-```
+Six core models are benchmarked across three machine types (fan, pump, valve):
+
+| #   | Model                          | Category            | Input Features        | Anomaly Score            |
+| --- | ------------------------------ | ------------------- | --------------------- | ------------------------ |
+| 1   | OCSVM                          | Classical ML        | MFCC + spectral stats | Negative decision value  |
+| 2   | Isolation Forest               | Classical ML        | MFCC + spectral stats | Negative score_samples   |
+| 3   | Dense Autoencoder              | DL – Reconstruction | Feature vectors       | MSE reconstruction error |
+| 4   | CNN Autoencoder                | DL – Reconstruction | Log‑mel spectrograms  | MSE reconstruction error |
+| 5   | Transformer Autoencoder        | DL – Reconstruction | Log‑mel spectrograms  | MSE reconstruction error |
+| 6   | CNN14 + kNN (full / truncated) | Hybrid (DL Emb.)    | CNN14 embeddings      | Mean kNN distance        |
+
+Classical models operate on handcrafted acoustic feature vectors (MFCCs, deltas, energy and spectral descriptors).[file:36]  
+Deep models use Log‑mel spectrograms or CNN14 embeddings as inputs, and anomaly scores are computed from reconstruction errors or nearest‑neighbor distances.[file:37][file:38][web:23][web:52]
+
+---
+
+## 5. Repository Structure
+
+```text
 AD_Benchmark_MIMII_v2/
 │
-├── run_all.py                          ← Run all 6 models, generates benchmark_summary.csv
+├── run_all.py                          # Run all models, aggregate results to benchmark_summary.csv
 ├── requirements.txt
 ├── .gitignore
 ├── LICENSE
 │
 ├── utils/
-│   ├── config.py                       ← All hyperparameters and paths
-│   ├── features.py                     ← Audio feature extraction (MFCC, log-mel, rich)
-│   └── evaluate.py                     ← AUC, pAUC, F1, confusion matrix
+│   ├── config.py                       # All hyperparameters and paths
+│   ├── features.py                     # Audio feature extraction (MFCC, log-mel, rich features)
+│   └── evaluate.py                     # Metrics: AUC, pAUC, Accuracy, Precision, Recall, F1, confusion matrix
 │
 ├── Baseline/
-│   ├── SVM/ocsvm.py                    ← Model 1: OCSVM
-│   └── IsolationForest/iforest.py      ← Model 2: Isolation Forest
+│   ├── SVM/ocsvm.py                    # Model 1: OCSVM
+│   └── IsolationForest/iforest.py      # Model 2: Isolation Forest
 │
 ├── Autoencoder/
-│   ├── Dense/dense_ae.py               ← Model 3: Dense Autoencoder
-│   ├── CNN/cnn_ae.py                   ← Model 4: CNN Autoencoder
-│   └── Transformer/transformer_ae.py   ← Model 5: Transformer Autoencoder
+│   ├── Dense/dense_ae.py               # Model 3: Dense Autoencoder
+│   ├── CNN/cnn_ae.py                   # Model 4: CNN Autoencoder
+│   └── Transformer/transformer_ae.py   # Model 5: Transformer Autoencoder
 │
 ├── Embedding/
-│   └── CNN14_KNN/cnn14_knn.py          ← Model 6: CNN14 + kNN (Hybrid)
+│   └── CNN14_KNN/cnn14_knn.py          # Model 6: CNN14 + kNN (full and truncated variants)
 │
-├── data/MIMII/                         ← Place your dataset here (not in Git)
+├── data/MIMII/                         # Place the MIMII dataset here (not committed)
 │   ├── fan/train/normal/
 │   ├── fan/test/normal/ + anomaly/
 │   ├── pump/...
 │   └── valve/...
 │
-└── results/                            ← Auto-generated CSV result files
-    ├── ocsvm_fan.csv
-    ├── cnn14_knn_k5_fan.csv
-    └── benchmark_summary.csv           ← Full comparison table
+└── results/                            # Auto-generated CSV result files
+    ├── dense_ae_all.csv                # Dense AE metrics per machine
+    ├── cnn_ae_all.csv                  # CNN AE metrics per machine
+    ├── transformer_ae_all.csv          # Transformer AE metrics per machine
+    ├── iforest_all.csv                 # Isolation Forest metrics per machine
+    ├── truncated_cnn14_pump.csv        # Example truncated CNN14 results (pump)
+    ├── benchmark_summary.csv           # Summary comparison table
+    └── benchmark_avg.csv               # Averaged metrics across machines
 ```
+
+The CSV files in `results/` are directly used to generate the tables in the paper.[file:36][file:37][file:38]
 
 ---
 
-## Setup
+## 6. Setup
 
-### 1. Clone
+### 6.1 Clone
 
 ```bash
-git clone https://github.com/<dev-rahman>/AD_Benchmark_MIMII_v2.git
+git clone https://github.com/dev-rahman/AD_Benchmark_MIMII_v2.git
 cd AD_Benchmark_MIMII_v2
 ```
 
-### 2. Virtual Environment
+### 6.2 Virtual Environment
 
 ```bash
 # macOS / Linux
@@ -100,62 +131,93 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-### 3. Install Dependencies
+### 6.3 Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-> **M1/M2 Mac:** PyTorch will automatically use Metal (MPS) for GPU acceleration.
-> **CUDA:** Install PyTorch with the correct CUDA version from https://pytorch.org
-
-### 4. Download the MIMII Dataset
-
-1. Go to: https://zenodo.org/record/3384388
-2. Download `fan`, `pump`, and `valve` zip files
-3. Extract into `data/MIMII/`:
-
-```
-data/MIMII/
-├── fan/
-│   ├── train/normal/       ← .wav files for training
-│   └── test/normal/        ← normal test clips
-│       anomaly/            ← anomalous test clips
-├── pump/...
-└── valve/...
-```
-
-> **Tip (laptop users):** Use ~30–40 train clips + 10 normal + 10 anomaly per machine
-> for a fast benchmark. The models work on any size subset.
+> On M1/M2 Macs, PyTorch can use Metal (MPS) for GPU acceleration if installed with the appropriate options.[web:23]  
+> For CUDA‑based GPUs, install PyTorch with the correct CUDA version from https://pytorch.org.[web:23]
 
 ---
 
-## Running
+## 7. Dataset: MIMII
 
-### Run all 6 models on all machines (produces paper table)
+The MIMII (Malfunctioning Industrial Machine Investigation and Inspection) dataset contains normal and anomalous sounds from valves, pumps, fans, and slide rails recorded in real factory environments with background noise.[web:21]  
+In this project, we use the **fan**, **pump**, and **valve** machines.
+
+### 7.1 Download
+
+1. Visit: https://zenodo.org/record/3384388
+2. Download the `fan`, `pump`, and `valve` archives.
+3. Extract into `data/MIMII/`:
+
+```text
+data/MIMII/
+├── fan/
+│   ├── train/normal/
+│   └── test/
+│       ├── normal/
+│       └── anomaly/
+├── pump/
+└── valve/
+```
+
+> For fast experiments on laptops, a subset of ~30–40 train clips and ~10 normal + 10 anomalous test clips per machine is sufficient for the benchmark, but the code supports the full dataset.[web:21]
+
+---
+
+## 8. Running Experiments
+
+All models are trained exclusively on `train/normal` and evaluated on both normal and anomalous test recordings under the same train–test split.
+
+### 8.1 Run all models and generate benchmark tables
 
 ```bash
 python run_all.py --machine all --models all
 ```
 
-### Run a single model on one machine
+This command:
+
+- Trains and evaluates all configured models for fan, pump, and valve.
+- Writes per‑model CSV files to `results/`.
+- Aggregates metrics into `benchmark_summary.csv` and `benchmark_avg.csv`.
+
+### 8.2 Run individual models
+
+Classical baselines:
 
 ```bash
 python Baseline/SVM/ocsvm.py --machine fan
 python Baseline/IsolationForest/iforest.py --machine pump
-python Autoencoder/Dense/dense_ae.py --machine valve
-python Autoencoder/CNN/cnn_ae.py --machine fan
-python Autoencoder/Transformer/transformer_ae.py --machine fan
-python Embedding/CNN14_KNN/cnn14_knn.py --machine fan --k 5
+python Baseline/IsolationForest/iforest.py --machine valve
 ```
 
-### Run only classical ML models
+Reconstruction‑based models:
+
+```bash
+python Autoencoder/Dense/dense_ae.py --machine valve
+python Autoencoder/CNN/cnn_ae.py --machine fan
+python Autoencoder/Transformer/transformer_ae.py --machine pump
+```
+
+Embedding‑based models (full and truncated CNN14):
+
+```bash
+python Embedding/CNN14_KNN/cnn14_knn.py --machine fan --k 5
+python Embedding/CNN14_KNN/cnn14_knn.py --machine pump --k 5 --truncated True
+```
+
+### 8.3 Filter by paradigm
+
+Run only classical models:
 
 ```bash
 python run_all.py --models classical
 ```
 
-### Run only DL models
+Run only deep learning models:
 
 ```bash
 python run_all.py --models dl
@@ -163,59 +225,120 @@ python run_all.py --models dl
 
 ---
 
-## Evaluation Metrics
+## 9. Evaluation Metrics
 
-| Metric                            | Description                                 | Standard        |
-| --------------------------------- | ------------------------------------------- | --------------- |
-| **AUC-ROC**                       | Area under ROC curve — primary metric       | Standard        |
-| **pAUC**                          | Partial AUC at 10% FPR, normalised to [0,1] | DCASE Challenge |
-| **F1**                            | F1 score at optimal threshold               | Standard        |
-| **Accuracy / Precision / Recall** | Threshold-based metrics                     | Standard        |
+We follow common practice in industrial acoustic anomaly detection and DCASE Task 2 challenges.[web:32][web:53]
 
-Results are saved per-model per-machine to `results/` as CSV files.
-`run_all.py` additionally outputs `benchmark_summary.csv` and `benchmark_avg.csv`.
+Primary metrics:
 
----
+- **ROC-AUC**: Area under the Receiver Operating Characteristic curve, measures ranking quality of anomaly scores.
+- **pAUC**: Partial ROC-AUC in a low false‑positive region (e.g. up to 10% FPR), emphasizing performance under strict alarm budgets.[web:32][web:53]
 
-## Results Table
+Additional threshold‑based metrics:
 
-> Fill in after running all experiments.
+- **Accuracy**
+- **Precision**
+- **Recall**
+- **F1-score**
 
-| Method           | Category            | Fan AUC | Pump AUC | Valve AUC | Avg AUC |
-| ---------------- | ------------------- | ------- | -------- | --------- | ------- |
-| OCSVM            | Classical ML        | —       | —        | —         | —       |
-| Isolation Forest | Classical ML        | —       | —        | —         | —       |
-| Dense AE         | DL – Reconstruction | —       | —        | —         | —       |
-| CNN AE           | DL – Reconstruction | —       | —        | —         | —       |
-| Transformer AE   | DL – Reconstruction | —       | —        | —         | —       |
-| CNN14 + kNN      | Hybrid (DL Emb.)    | —       | —        | —         | —       |
+Per‑model confusion matrices (TN, FP, FN, TP) and thresholds are stored in the CSV files under `results/`.[file:36][file:37][file:38]  
+These metrics are used directly in the tables and analysis sections of the paper.
 
 ---
 
-## Citation
+## 10. Results
+
+The tables below summarize the main comparison between classical ML and deep learning across machine types. Values are taken from the CSV files in `results/` (rounded to 4 decimals where appropriate).[file:36][file:37][file:38]
+
+### 10.1 Classical vs Deep Learning (main comparison)
+
+| Machine | Method           | Category            | ROC-AUC | F1     |
+| ------- | ---------------- | ------------------- | ------- | ------ |
+| Fan     | OCSVM            | Classical ML        | 0.531   | 0.394  |
+|         | Isolation Forest | Classical ML        | 0.5028  | 0.8811 |
+|         | Dense AE         | DL – Reconstruction | 0.7105  | 0.8846 |
+|         | CNN AE           | DL – Reconstruction | 0.5203  | 0.8806 |
+|         | Transformer AE   | DL – Reconstruction | 0.5619  | 0.8824 |
+|         | CNN14 + kNN      | Hybrid (DL Emb.)    | 0.5275  | 0.8806 |
+|         | TruncCNN14 + kNN | Hybrid (DL Emb.)    | 0.5646  | 0.8806 |
+
+| Machine | Method           | Category            | ROC-AUC | F1     |
+| ------- | ---------------- | ------------------- | ------- | ------ |
+| Pump    | OCSVM            | Classical ML        | 0.617   | 0.494  |
+|         | Isolation Forest | Classical ML        | 0.5969  | 0.7203 |
+|         | Dense AE         | DL – Reconstruction | 0.7783  | 0.7339 |
+|         | CNN AE           | DL – Reconstruction | 0.5130  | 0.7047 |
+|         | Transformer AE   | DL – Reconstruction | 0.6427  | 0.7000 |
+|         | CNN14 + kNN      | Hybrid (DL Emb.)    | 0.6985  | 0.7286 |
+|         | TruncCNN14 + kNN | Hybrid (DL Emb.)    | 0.7064  | 0.7082 |
+
+| Machine | Method           | Category            | ROC-AUC | F1     |
+| ------- | ---------------- | ------------------- | ------- | ------ |
+| Valve   | OCSVM            | Classical ML        | 0.653   | 0.516  |
+|         | Isolation Forest | Classical ML        | 0.5230  | 0.7054 |
+|         | Dense AE         | DL – Reconstruction | 0.7288  | 0.7660 |
+|         | CNN AE           | DL – Reconstruction | 0.5109  | 0.7056 |
+|         | Transformer AE   | DL – Reconstruction | 0.5443  | 0.7061 |
+|         | CNN14 + kNN      | Hybrid (DL Emb.)    | 0.7119  | 0.7412 |
+|         | TruncCNN14 + kNN | Hybrid (DL Emb.)    | 0.6669  | 0.7193 |
+
+The full metrics (including pAUC, accuracy, precision, recall, threshold, TN/FP/FN/TP) are available in:
+
+- `results/dense_ae_all.csv` (Dense Autoencoder)[file:38]
+- `results/cnn_ae_all.csv` (CNN Autoencoder)[file:37]
+- `results/transformer_ae_all.csv` (Transformer Autoencoder)[file:43]
+- `results/iforest_all.csv` (Isolation Forest)[file:36]
+- `results/truncated_cnn14_pump.csv` and related truncated CNN14 files.[file:35]
+
+`benchmark_summary.csv` and `benchmark_avg.csv` aggregate these per‑model results into summary tables used in the paper.
+
+---
+
+## 11. Reproducibility
+
+To reproduce the paper’s results:
+
+1. Use the same MIMII machine categories (fan, pump, valve) and directory layout as described in Section 7.[web:21]
+2. Install dependencies with `requirements.txt`, using Python 3.
+3. Run `python run_all.py --machine all --models all` to generate all CSV files under `results/`.
+4. Use the CSV files (`*_all.csv`, `benchmark_summary.csv`, `benchmark_avg.csv`) to recreate the tables and plots in the manuscript.
+
+Random seeds, hyperparameters, and evaluation settings are defined in `utils/config.py` and the individual model scripts. This configuration is fixed for all runs in the paper to ensure a consistent comparison.
+
+---
+
+## 12. Citation
+
+If you use this repository in academic work, please cite:
 
 ```bibtex
 @misc{mirzadeh2026mimii,
-  title     = {Classical and Deep Learning Approaches for Industrial Sound Anomaly Detection
-               on the MIMII Dataset},
-  author    = {Mirzadeh, Simin and Rahman, Muhammad},
-  year      = {2026},
+  title       = {Classical and Deep Learning Approaches for Industrial Sound Anomaly Detection
+                 on the MIMII Dataset},
+  author      = {Mirzadeh, Simin and Rahman, Muhammad},
+  year        = {2026},
   institution = {University of Bamberg},
-  note      = {Supervised by Prof. Dr. Jakob Abe{\ss}er}
+  note        = {Supervised by Prof. Dr. Jakob Abe{\ss}er}
+}
+```
+
+And the MIMII dataset:
+
+```bibtex
+@inproceedings{purohit2019mimii,
+  author    = {Purohit, Harsh and Tanabe, Ryo and Ichige, Kenji and Endo, Takashi and Nikaido, Yuki and Suefusa, Kaori and Kawaguchi, Yohei},
+  title     = {{MIMII} Dataset: Sound Dataset for Malfunctioning Industrial Machine Investigation and Inspection},
+  booktitle = {Proceedings of the Detection and Classification of Acoustic Scenes and Events (DCASE) Workshop},
+  year      = {2019},
+  doi       = {10.48550/arXiv.1909.09347},
+  url       = {https://arxiv.org/abs/1909.09347}
 }
 ```
 
 ---
 
-## References
+## 13. License
 
-- **MIMII Dataset**: Purohit et al., _MIMII Dataset: Sound dataset for malfunctioning industrial machine investigation and inspection_, DCASE 2019. https://zenodo.org/record/3384388
-- **CNN14 / PANNs**: Kong et al., _PANNs: Large-Scale Pretrained Audio Neural Networks for Audio Pattern Recognition_, IEEE/ACM TASLP 2020.
-- **DCASE Challenge**: http://dcase.community
+This project is released under the MIT License.
 
----
-
-## License
-
-MIT License — Copyright (c) 2026 Simin Mirzadeh and Muhammad Rahman.
-See [LICENSE](LICENSE) for details.
+See `LICENSE` for details.
