@@ -1,2 +1,2 @@
 machine,method,AUC,pAUC,Accuracy,Precision,Recall,F1,Threshold,TN,FP,FN,TP
-valve,TruncCNN14_kNN(k=5),0.6509,0.075,0.6132,0.5951,0.9081,0.719,3.877459,104,296,44,435
+valve,TruncCNN14Block4_SegKNN(k=5),0.6669,0.1002,0.6644,0.6608,0.7891,0.7193,6.523702,206,194,101,378

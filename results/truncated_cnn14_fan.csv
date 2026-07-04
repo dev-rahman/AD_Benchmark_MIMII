@@ -1,2 +1,2 @@
 machine,method,AUC,pAUC,Accuracy,Precision,Recall,F1,Threshold,TN,FP,FN,TP
-fan,TruncCNN14_kNN(k=5),0.6196,0.1369,0.7867,0.7867,1.0,0.8806,0.463741,0,400,0,1475
+fan,TruncCNN14Block4_SegKNN(k=5),0.5646,0.0518,0.7867,0.7867,1.0,0.8806,3.099771,0,400,0,1475

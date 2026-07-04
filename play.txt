@@ -1,0 +1,142 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Classical and Deep Learning Approaches for Industrial Sound
+%% Anomaly Detection on the MIMII Dataset
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{Purohit2019MIMII,
+  author = {Purohit, Harsh and Tanabe, Ryo and Ichige, Kiyohiro and Endo, Takuya and Nikaido, Yuki and Suefusa, Kaori and Kawaguchi, Yuma},
+  year = {2019},
+  month = {09},
+  title = {{MIMII} Dataset: Sound Dataset for Malfunctioning Industrial Machine Investigation and Inspection},
+  journal = {arXiv},
+  pages = {},
+  doi = {10.48550/arXiv.1909.09347}
+}
+
+@article{Koizumi2020DCASE,
+  author = {Koizumi, Yuma and Saito, Shoichiro and Uematsu, Hiroshi and Harada, Noboru and Imoto, Keisuke},
+  year = {2020},
+  month = {06},
+  title = {Description and Discussion on {DCASE} 2020 Challenge Task 2: Unsupervised Anomalous Sound Detection for Machine Condition Monitoring},
+  journal = {arXiv},
+  pages = {},
+  doi = {10.48550/arXiv.2006.05822}
+}
+
+@article{Grzymkowski2026Survey,
+  author = {Grzymkowski, Piotr and Others},
+  year = {2026},
+  month = {},
+  title = {What Is That Noise? A Survey of Anomalous Sound Detection Using Edge Systems},
+  journal = {Electronics},
+  volume = {15},
+  number = {7},
+  pages = {1508},
+  doi = {TO_VERIFY}
+}
+
+@misc{Logan2000MFCC,
+  author = {Logan, Beth},
+  year = {2000},
+  title = {{Mel Frequency Cepstral Coefficients for Music Modeling}},
+  note = {Presented at ISMIR 2000}
+}
+
+@article{Scholkopf2001OCSVM,
+  author = {Sch{\"o}lkopf, Bernhard and Platt, John C. and Shawe-Taylor, John and Smola, Alex J. and Williamson, Robert C.},
+  year = {2001},
+  month = {07},
+  title = {Estimating the Support of a High-Dimensional Distribution},
+  journal = {Neural Computation},
+  volume = {13},
+  number = {7},
+  pages = {1443--1471},
+  doi = {10.1162/089976601750264965}
+}
+
+@inproceedings{Liu2008IsolationForest,
+  author = {Liu, Fei Tony and Ting, Kai Ming and Zhou, Zhi-Hua},
+  year = {2008},
+  month = {12},
+  title = {Isolation Forest},
+  booktitle = {Proceedings of the IEEE International Conference on Data Mining (ICDM)},
+  pages = {413--422},
+  doi = {10.1109/ICDM.2008.17}
+}
+
+@article{Koizumi2019NP,
+  author = {Koizumi, Yuma and Saito, Shoichiro and Uematsu, Hiroshi and Kawachi, Yuki and Harada, Noboru},
+  year = {2019},
+  month = {09},
+  title = {Unsupervised Detection of Anomalous Sound Based on Deep Learning and the Neyman--Pearson Lemma},
+  journal = {IEEE/ACM Transactions on Audio, Speech, and Language Processing},
+  volume = {27},
+  number = {1},
+  pages = {212--224},
+  doi = {10.1109/TASLP.2019.2947407}
+}
+
+@article{Coelho2022AE,
+  author = {Coelho, Gabriel and Others},
+  year = {2022},
+  title = {Deep Autoencoders for Acoustic Anomaly Detection: Experiments with Working Machine and In-Vehicle Audio},
+  journal = {Neural Computing and Applications},
+  volume = {TO_VERIFY},
+  number = {TO_VERIFY},
+  pages = {TO_VERIFY},
+  doi = {TO_VERIFY}
+}
+
+@inproceedings{Gong2021AST,
+  author = {Gong, Yuan and Chung, Yu-An and Glass, James},
+  year = {2021},
+  month = {08},
+  title = {{AST}: Audio Spectrogram Transformer},
+  booktitle = {Proceedings of Interspeech},
+  pages = {571--575},
+  doi = {10.21437/Interspeech.2021-698}
+}
+
+@inproceedings{Vaswani2017Attention,
+  author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  year = {2017},
+  title = {Attention Is All You Need},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume = {30},
+  pages = {}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Recent Related Work (2023--2026)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{Ye2025SDMAE,
+  author = {Ye, Wei and Others},
+  year = {2025},
+  title = {{SDMAE}: A Self-Distillation Masked Autoencoder for Anomalous Sound Detection},
+  journal = {Applied Acoustics},
+  volume = {TO_VERIFY},
+  number = {TO_VERIFY},
+  pages = {TO_VERIFY},
+  doi = {TO_VERIFY}
+}
+
+@inproceedings{Liu2024DPMAE,
+  author = {Liu, Yang and Others},
+  year = {2024},
+  title = {{DP-MAE}: A Dual-Path Masked Autoencoder Based Self-Supervised Learning Method for Anomalous Sound Detection},
+  booktitle = {TO_VERIFY},
+  pages = {TO_VERIFY},
+  doi = {TO_VERIFY}
+}
+
+@article{Guan2023TransformerAE,
+  author = {Guan, Xin and Others},
+  year = {2023},
+  title = {Transformer-Based Autoencoder with Identity Constraint for Unsupervised Anomalous Sound Detection},
+  journal = {Sensors},
+  volume = {TO_VERIFY},
+  number = {TO_VERIFY},
+  pages = {TO_VERIFY},
+  doi = {TO_VERIFY}
+}
