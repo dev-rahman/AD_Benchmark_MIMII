@@ -6,7 +6,7 @@ Classical and Deep Learning Approaches for Industrial Sound Anomaly Detection on
 
 ## 1. Project Overview
 
-This repository contains the implementation and benchmark results for our comparative study of anomaly detection methods on industrial machine sounds from the MIMII dataset.[web:21]  
+This repository contains the implementation and benchmark results for our comparative study of anomaly detection methods on industrial machine sounds from the MIMII dataset.
 We evaluate:
 
 - Classical machine learning baselines using handcrafted acoustic features.
@@ -41,7 +41,7 @@ This repository accompanies the paper:
 We further analyze:
 
 - How model complexity relates to anomaly detection performance.
-- Whether intermediate (truncated) CNN14 embeddings improve kNN‑based detection compared to full CNN14 features.[web:23][web:52]
+- Whether intermediate (truncated) CNN14 embeddings improve kNN‑based detection compared to full CNN14 features.
 
 ---
 
@@ -58,8 +58,8 @@ Six core models are benchmarked across three machine types (fan, pump, valve):
 | 5   | Transformer Autoencoder        | DL – Reconstruction | Log‑mel spectrograms  | MSE reconstruction error |
 | 6   | CNN14 + kNN (full / truncated) | Hybrid (DL Emb.)    | CNN14 embeddings      | Mean kNN distance        |
 
-Classical models operate on handcrafted acoustic feature vectors (MFCCs, deltas, energy and spectral descriptors).[file:36]  
-Deep models use Log‑mel spectrograms or CNN14 embeddings as inputs, and anomaly scores are computed from reconstruction errors or nearest‑neighbor distances.[file:37][file:38][web:23][web:52]
+Classical models operate on handcrafted acoustic feature vectors (MFCCs, deltas, energy and spectral descriptors).
+Deep models use Log‑mel spectrograms or CNN14 embeddings as inputs, and anomaly scores are computed from reconstruction errors or nearest‑neighbor distances.
 
 ---
 
@@ -106,7 +106,7 @@ AD_Benchmark_MIMII_v2/
     └── benchmark_avg.csv               # Averaged metrics across machines
 ```
 
-The CSV files in `results/` are directly used to generate the tables in the paper.[file:36][file:37][file:38]
+The CSV files in `results/` are directly used to generate the tables in the paper.
 
 ---
 
@@ -137,14 +137,14 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-> On M1/M2 Macs, PyTorch can use Metal (MPS) for GPU acceleration if installed with the appropriate options.[web:23]  
-> For CUDA‑based GPUs, install PyTorch with the correct CUDA version from https://pytorch.org.[web:23]
+> On M1/M2 Macs, PyTorch can use Metal (MPS) for GPU acceleration if installed with the appropriate options.
+> For CUDA‑based GPUs, install PyTorch with the correct CUDA version from https://pytorch.org.
 
 ---
 
 ## 7. Dataset: MIMII
 
-The MIMII (Malfunctioning Industrial Machine Investigation and Inspection) dataset contains normal and anomalous sounds from valves, pumps, fans, and slide rails recorded in real factory environments with background noise.[web:21]  
+The MIMII (Malfunctioning Industrial Machine Investigation and Inspection) dataset contains normal and anomalous sounds from valves, pumps, fans, and slide rails recorded in real factory environments with background noise.
 In this project, we use the **fan**, **pump**, and **valve** machines.
 
 ### 7.1 Download
@@ -164,7 +164,7 @@ data/MIMII/
 └── valve/
 ```
 
-> For fast experiments on laptops, a subset of ~30–40 train clips and ~10 normal + 10 anomalous test clips per machine is sufficient for the benchmark, but the code supports the full dataset.[web:21]
+> For fast experiments on laptops, a subset of ~30–40 train clips and ~10 normal + 10 anomalous test clips per machine is sufficient for the benchmark, but the code supports the full dataset.
 
 ---
 
@@ -227,12 +227,12 @@ python run_all.py --models dl
 
 ## 9. Evaluation Metrics
 
-We follow common practice in industrial acoustic anomaly detection and DCASE Task 2 challenges.[web:32][web:53]
+We follow common practice in industrial acoustic anomaly detection and DCASE Task 2 challenges.
 
 Primary metrics:
 
 - **ROC-AUC**: Area under the Receiver Operating Characteristic curve, measures ranking quality of anomaly scores.
-- **pAUC**: Partial ROC-AUC in a low false‑positive region (e.g. up to 10% FPR), emphasizing performance under strict alarm budgets.[web:32][web:53]
+- **pAUC**: Partial ROC-AUC in a low false‑positive region (e.g. up to 10% FPR), emphasizing performance under strict alarm budgets.
 
 Additional threshold‑based metrics:
 
@@ -241,14 +241,14 @@ Additional threshold‑based metrics:
 - **Recall**
 - **F1-score**
 
-Per‑model confusion matrices (TN, FP, FN, TP) and thresholds are stored in the CSV files under `results/`.[file:36][file:37][file:38]  
+Per‑model confusion matrices (TN, FP, FN, TP) and thresholds are stored in the CSV files under `results/`.  
 These metrics are used directly in the tables and analysis sections of the paper.
 
 ---
 
 ## 10. Results
 
-The tables below summarize the main comparison between classical ML and deep learning across machine types. Values are taken from the CSV files in `results/` (rounded to 4 decimals where appropriate).[file:36][file:37][file:38]
+The tables below summarize the main comparison between classical ML and deep learning across machine types. Values are taken from the CSV files in `results/` (rounded to 4 decimals where appropriate).
 
 ### 10.1 Classical vs Deep Learning (main comparison)
 
@@ -284,11 +284,11 @@ The tables below summarize the main comparison between classical ML and deep lea
 
 The full metrics (including pAUC, accuracy, precision, recall, threshold, TN/FP/FN/TP) are available in:
 
-- `results/dense_ae_all.csv` (Dense Autoencoder)[file:38]
-- `results/cnn_ae_all.csv` (CNN Autoencoder)[file:37]
-- `results/transformer_ae_all.csv` (Transformer Autoencoder)[file:43]
-- `results/iforest_all.csv` (Isolation Forest)[file:36]
-- `results/truncated_cnn14_pump.csv` and related truncated CNN14 files.[file:35]
+- `results/dense_ae_all.csv` (Dense Autoencoder)
+- `results/cnn_ae_all.csv` (CNN Autoencoder)
+- `results/transformer_ae_all.csv` (Transformer Autoencoder)
+- `results/iforest_all.csv` (Isolation Forest)
+- `results/truncated_cnn14_pump.csv` and related truncated CNN14 files.
 
 `benchmark_summary.csv` and `benchmark_avg.csv` aggregate these per‑model results into summary tables used in the paper.
 
@@ -298,7 +298,7 @@ The full metrics (including pAUC, accuracy, precision, recall, threshold, TN/FP/
 
 To reproduce the paper’s results:
 
-1. Use the same MIMII machine categories (fan, pump, valve) and directory layout as described in Section 7.[web:21]
+1. Use the same MIMII machine categories (fan, pump, valve) and directory layout as described in Section 7.
 2. Install dependencies with `requirements.txt`, using Python 3.
 3. Run `python run_all.py --machine all --models all` to generate all CSV files under `results/`.
 4. Use the CSV files (`*_all.csv`, `benchmark_summary.csv`, `benchmark_avg.csv`) to recreate the tables and plots in the manuscript.
