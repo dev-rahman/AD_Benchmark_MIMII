@@ -20,11 +20,18 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import roc_curve, auc
+import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from utils.config   import DATA_ROOT, RESULTS_DIR, MACHINES, AE_EPOCHS, AE_BATCH_SIZE, AE_LR, get_device
 from utils.features import load_feature_dataset, rich_features
 from utils.evaluate import evaluate, save_results
+
+
+# ── Plot output directory (NEW) ────────────────────────────────────────────────
+PLOT_DIR = os.path.join(os.path.dirname(__file__), "v1")
+os.makedirs(PLOT_DIR, exist_ok=True)
 
 
 # ── Architecture ──────────────────────────────────────────────────────────────
@@ -89,6 +96,33 @@ def reconstruction_error(model: nn.Module, X: np.ndarray, device: str) -> np.nda
     return np.mean((X.astype(np.float32) - recon) ** 2, axis=1)
 
 
+# ── ROC curve plotting (NEW) ──────────────────────────────────────────────────
+
+def plot_roc_curve(y_true: np.ndarray, scores: np.ndarray, machine: str, save_dir: str = PLOT_DIR):
+    """
+    Plot and save a single binary ROC curve (normal vs anomaly)
+    for one machine, using the continuous reconstruction-error scores.
+    """
+    fpr, tpr, _ = roc_curve(y_true, scores)
+    roc_auc = auc(fpr, tpr)
+
+    plt.figure(figsize=(5, 5))
+    plt.plot(fpr, tpr, color="#1f77b4", lw=2, label=f"Dense AE (AUC = {roc_auc:.3f})")
+    plt.plot([0, 1], [0, 1], "--", color="gray", lw=0.8)
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title(f"Dense Autoencoder — {machine}")
+    plt.legend(loc="lower right")
+    plt.tight_layout()
+
+    save_path = os.path.join(save_dir, f"roc_dense_ae_{machine}.png")
+    plt.savefig(save_path, dpi=200)
+    plt.close()
+    print(f"  Saved ROC plot: {save_path}")
+
+    return roc_auc
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def run(machine: str) -> dict:
@@ -125,6 +159,9 @@ def run(machine: str) -> dict:
     y_true = np.array([0] * len(X_norm) + [1] * len(X_anom))
     scores = reconstruction_error(model, X_test, device)
 
+    # Save ROC curve plot for this machine (NEW).
+    plot_roc_curve(y_true, scores, machine)
+
     result = evaluate(y_true, scores, machine=machine, method="DenseAE")
     save_results([result], os.path.join(RESULTS_DIR, f"dense_ae_{machine}.csv"))
     return result
@@ -142,4 +179,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main() 

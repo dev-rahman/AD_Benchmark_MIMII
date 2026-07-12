@@ -20,12 +20,14 @@ import random
 import librosa
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from sklearn.metrics import (
     roc_auc_score,
     average_precision_score,
     classification_report,
     confusion_matrix,
+    roc_curve,
 )
 from sklearn.preprocessing import StandardScaler
 
@@ -59,9 +61,11 @@ DATASET_DIR = PROJECT_DIR / "data" / "MIMII"
 
 RESULT_DIR = BASE_DIR / "results"
 CACHE_DIR = BASE_DIR / "feature_cache" / "dense"
+PLOT_DIR = BASE_DIR / "plotes"
 
 RESULT_DIR.mkdir(parents=True, exist_ok=True)
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
+PLOT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ------------------------------------------------
@@ -341,6 +345,34 @@ def evaluate_anomaly_detection(y_true, anomaly_scores, threshold):
 
 
 # ------------------------------------------------
+# ROC curve plotting (NEW)
+# ------------------------------------------------
+
+def plot_roc_curve(y_true, anomaly_scores, roc_auc, machine, save_dir=PLOT_DIR):
+    """
+    Plot and save a single binary ROC curve (normal vs anomaly)
+    for one machine, using the continuous anomaly scores.
+    """
+
+    fpr, tpr, _ = roc_curve(y_true, anomaly_scores)
+
+    plt.figure(figsize=(5, 5))
+    plt.plot(fpr, tpr, color="#1f77b4", lw=2, label=f"Dense AE (AUC = {roc_auc:.3f})")
+    plt.plot([0, 1], [0, 1], "--", color="gray", lw=0.8)
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title(f"Dense Autoencoder — {machine}")
+    plt.legend(loc="lower right")
+    plt.tight_layout()
+
+    save_path = save_dir / f"roc_dense_ae_{machine}.png"
+    plt.savefig(save_path, dpi=200)
+    plt.close()
+
+    print(f"Saved ROC plot: {save_path}")
+
+
+# ------------------------------------------------
 # Run one machine
 # ------------------------------------------------
 
@@ -424,18 +456,33 @@ def run_one_machine(machine: str, rebuild_cache: bool = False) -> dict:
         threshold=threshold,
     )
 
+    # Save ROC curve plot for this machine (NEW).
+    plot_roc_curve(
+        y_true=y_test,
+        anomaly_scores=test_errors,
+        roc_auc=roc_auc,
+        machine=machine,
+    )
+
     print("\nThreshold:", threshold)
     print("Confusion matrix:")
     print(cm)
 
+    accuracy_val = report["accuracy"]
+    anomaly_precision_val = report["anomaly"]["precision"]
+    anomaly_recall_val = report["anomaly"]["recall"]
+    anomaly_f1_val = report["anomaly"]["f1-score"]
+    macro_f1_val = report["macro avg"]["f1-score"]
+    weighted_f1_val = report["weighted avg"]["f1-score"]
+
     print(f"ROC-AUC:           {roc_auc:.4f}")
     print(f"PR-AUC:            {pr_auc:.4f}")
-    print(f"Accuracy:          {report['accuracy']:.4f}")
-    print(f"Anomaly Precision: {report['anomaly']['precision']:.4f}")
-    print(f"Anomaly Recall:    {report['anomaly']['recall']:.4f}")
-    print(f"Anomaly F1:        {report['anomaly']['f1-score']:.4f}")
-    print(f"Macro F1:          {report['macro avg']['f1-score']:.4f}")
-    print(f"Weighted F1:       {report['weighted avg']['f1-score']:.4f}")
+    print(f"Accuracy:          {accuracy_val:.4f}")
+    print(f"Anomaly Precision: {anomaly_precision_val:.4f}")
+    print(f"Anomaly Recall:    {anomaly_recall_val:.4f}")
+    print(f"Anomaly F1:        {anomaly_f1_val:.4f}")
+    print(f"Macro F1:          {macro_f1_val:.4f}")
+    print(f"Weighted F1:       {weighted_f1_val:.4f}")
 
     result = {
         "machine": machine,
